@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RepoDetailsPageController">
+   <children>
+      <Button fx:id="Back_Button" mnemonicParsing="false" onAction="#BacktoUserPage" prefHeight="46.0" prefWidth="78.0" text="Back" />
+      <ListView fx:id="files_unadded_list" layoutX="43.0" layoutY="92.0" prefHeight="247.0" prefWidth="132.0" />
+      <Text layoutX="46.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Files Unadded" />
+      <ListView fx:id="files_added_list" layoutX="231.0" layoutY="91.0" prefHeight="247.0" prefWidth="149.0" />
+      <Text layoutX="241.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Files Added" />
+      <Button fx:id="Commit_Button" layoutX="417.0" layoutY="118.0" mnemonicParsing="false" onAction="#CommitChanges" prefHeight="46.0" prefWidth="143.0" text="Commit (w/Message)" />
+      <Button fx:id="Push_Button" layoutX="417.0" layoutY="192.0" mnemonicParsing="false" onAction="#PushChanges" prefHeight="46.0" prefWidth="143.0" text="Push" />
+      <ImageView fitHeight="33.0" fitWidth="37.0" layoutX="183.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@/data/greenarrow.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="Add_Files_Button" layoutX="417.0" layoutY="265.0" mnemonicParsing="false" onAction="#AddFiles" prefHeight="33.0" prefWidth="143.0" text="Add All" />
+   </children>
+</AnchorPane>
