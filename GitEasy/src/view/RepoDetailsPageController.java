@@ -26,8 +26,11 @@ import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,8 +45,8 @@ public class RepoDetailsPageController {
 
 /**************REPO DETAILS PAGE***********************************************************************************************/
     
-	public static ObservableList<String> files_unadded;
-    public static ObservableList<String> files_added;
+	public static ObservableList<String> files_unadded = FXCollections.observableArrayList();
+    public static ObservableList<String> files_added = FXCollections.observableArrayList();
     
     @FXML
     private Button Add_Files_Button;
@@ -98,10 +101,10 @@ public class RepoDetailsPageController {
     @FXML
     void PushChanges(ActionEvent event) throws InvalidRemoteException, TransportException, GitAPIException {
     	if (GitEasyController.git_type.equals("github")) {
-    		GitEasyController.currentRepo.push().setRemote("origin").add("main").call();
+    		GitEasyController.currentRepo.push().setRemote("origin").setRefSpecs(new RefSpec("main")).setCredentialsProvider(new UsernamePasswordCredentialsProvider(GitEasyController.acc_token_name, GitEasyController.acc_token)).call();
     	}
     	else {
-    		GitEasyController.currentRepo.push().setRemote("origin").add("master").call();
+    		GitEasyController.currentRepo.push().setRemote("origin").setRefSpecs(new RefSpec("master")).setCredentialsProvider(new UsernamePasswordCredentialsProvider(GitEasyController.username, GitEasyController.acc_token)).call();
     	}
     	
     }

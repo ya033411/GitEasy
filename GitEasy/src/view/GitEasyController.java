@@ -48,17 +48,20 @@ public class GitEasyController {
 	public static String username;
 	public static String password;
 	public static String git_type;
+	public static String acc_token_name;
 	public static String acc_token;
 	public static String refresh_token;
-	public static Git currentRepo;
+	public static String BitB_key;
+	public static String BitB_secret;
 	public static String BitB_workspace;
+	public static Git currentRepo;
 	
 	static Stage stage;
 	static Scene scene;
 	static Parent root;
 	
 	/**************WELCOME PAGE***********************************************************************************************/
-
+	
     @FXML
     private CheckBox BitB_CheckBox;
 
@@ -78,7 +81,7 @@ public class GitEasyController {
     void LoginUser(ActionEvent event) throws IOException {
     	 username = Username_Login.getText();
     	 password = Password_Login.getText();
-    	String query = "SELECT A.GIT_TYPE, A.TOKEN, A.REFRESH_TOKEN, U.BITBWORKSPACE, U.USERNAME, U.PASSWORD " +
+    	String query = "SELECT A.GIT_TYPE,A.TOKEN_NAME, A.TOKEN, A.REFRESH_TOKEN, A.BITB_KEY, A.BITB_SECRET, A.BITBWORKSPACE, U.USERNAME, U.PASSWORD " +
     			       "FROM USER U JOIN AUTH A ON U.ID = A.ID WHERE U.USERNAME = " +
     			       "'" + username + "' " +
     			       "AND U.PASSWORD = " + 
@@ -97,6 +100,7 @@ public class GitEasyController {
     			Statement stmt=myConn.createStatement();  
     			ResultSet rs=stmt.executeQuery(query);
     			while (rs.next()) {
+    			acc_token_name = rs.getString("token_name");
     		    acc_token = rs.getString("token");
     			}
     			myConn.close();  
@@ -116,6 +120,8 @@ public class GitEasyController {
     			while (rs.next()) {
         		    acc_token = rs.getString("token");
         		    refresh_token = rs.getString("refresh_token");
+        		    BitB_key = rs.getString("bitb_key");
+        		    BitB_secret = rs.getString("bitb_secret");
         		    BitB_workspace = rs.getString("bitbworkspace");
         			}
                 myConn.close();  
@@ -167,7 +173,10 @@ public class GitEasyController {
     	HttpResponse<JsonNode> response;
 		try {
 			response = Unirest.post("https://bitbucket.org/site/oauth2/access_token")
-					  .body("{\"grant_type\":\"refresh_token\",\"refresh_token\":\"" + GitEasyController.refresh_token + "\"}")
+					  .header("Content-Type", "application/x-www-form-urlencoded")
+					  .basicAuth(GitEasyController.BitB_key,GitEasyController.BitB_secret)
+					  .field("grant_type", "refresh_token")
+					  .field("refresh_token", GitEasyController.refresh_token)
 					  .asJson();
 			JSONObject output = response.getBody().getObject();
 			GitEasyController.acc_token = output.getString("access_token");
